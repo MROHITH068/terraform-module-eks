@@ -5,7 +5,6 @@ resource "null_resource" "null" {
   }
 
   depends_on = [
-  local_file.sa,
   aws_eks_cluster.eks
   ]
 
