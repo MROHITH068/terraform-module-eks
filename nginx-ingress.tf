@@ -284,3 +284,30 @@ resource "aws_iam_role_policy_attachment" "alb-role-attach" {
   role       = aws_iam_role.alb.name
 }
 
+
+resource "local_file" "sa" {
+  content = templatefile("${path.module}/sa.yml", {role_arn = aws_iam_role.alb.arn} )
+  filename = "${path.module}/sa-final.yml"
+}
+
+resource "null_resource" "null" {
+
+  triggers = {
+    always = timestamp()
+  }
+
+  depends_on = [
+  local_file.sa,
+  aws_eks_cluster.eks
+  ]
+
+  provisioner "local-exec" {
+    command = <<EOF
+aws eks update-kubeconfig --name ${var.env}-eks
+kubectl apply -f ${path.module}/sa-final.yml
+helm repo add eks https://aws.github.io/eks-charts
+helm repo update eks
+helm install aws-loadbalancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=${var.env}-eks --set serviceAccount.create=false --set serviceAccount.name=aws-load-balancer-controller
+EOF
+  }
+}
