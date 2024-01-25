@@ -72,15 +72,22 @@ resource "aws_iam_policy" "sa-policy" {
           "Sid": "VisualEditor0",
           "Effect": "Allow",
           "Action": [
+            "kms:Decrypt",
             "ssm:GetParameterHistory",
             "ssm:GetParametersByPath",
             "ssm:GetParameters",
-            "ssm:GetParameter",
-            "ssm:DescribeParameters",
-            "kms:Decrypt"
+            "ssm:GetParameter"
           ],
-          "Resource": concat(["arn:aws:ssm:us-east-1:403215663985:parameter/roboshop.*",
-            var.kms_key_arn])
+          "Resource": [
+            "arn:aws:kms:us-east-1:403215663985:key/8dd96880-9b44-4bb8-b1f2-1f5940d93f11",
+            "arn:aws:ssm:us-east-1:403215663985:parameter/roboshop.*"
+          ]
+        },
+        {
+          "Sid": "VisualEditor1",
+          "Effect": "Allow",
+          "Action": "ssm:DescribeParameters",
+          "Resource": "*"
         }
       ]
     })
