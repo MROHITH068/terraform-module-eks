@@ -109,7 +109,7 @@ resource "aws_iam_role" "sa-role" {
           "Action": "sts:AssumeRoleWithWebIdentity",
           "Condition": {
             "StringEquals": {
-              "oidc.eks.region-code.amazonaws.com/id/${element(split("/", aws_iam_openid_connect_provider.oidc-iam.arn), 3)}:aud": "sts.amazonaws.com"
+              "oidc.eks.us-east-1.amazonaws.com/id/${element(split("/", aws_iam_openid_connect_provider.oidc-iam.arn), 3)}:aud": ["sts.amazonaws.com"]
             }
           }
         }
