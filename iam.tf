@@ -80,7 +80,8 @@ resource "aws_iam_policy" "sa-policy" {
           ],
           "Resource": [
             "arn:aws:kms:us-east-1:403215663985:key/8dd96880-9b44-4bb8-b1f2-1f5940d93f11",
-            "arn:aws:ssm:us-east-1:403215663985:parameter/roboshop.*"
+            "arn:aws:ssm:us-east-1:403215663985:parameter/roboshop.*",
+            "Resource": "arn:aws:ssm:ca-central-1::parameter/*"
           ]
         },
         {
